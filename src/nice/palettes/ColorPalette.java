@@ -61,9 +61,7 @@ public class ColorPalette {
 		
 		int random = PApplet.parseInt(myParent.random(json.size()));
 		palette = json.getJSONObject(random).getJSONArray("colors");
-		
-		System.out.println("Random seed: " + random);
-		
+				
 		for(int i = 0; i < palette.size(); i++) {
 			int c = PApplet.unhex("FF" + palette.getString(i));
 			values = PApplet.append(values, c);
@@ -74,19 +72,13 @@ public class ColorPalette {
 	
 	/**
 	 * return an array with a color palette defined by the user and based 
-	 * on the size of the JSON. To avoid errors, if the parameter is larger 
-	 * than the JSON's size, it will display an error in the console and pick a random number.
+	 * on the size of the JSON.
 	 * 
 	 * @param i number of the palette to load, maximum the JSON's size
 	 * @return int[]
 	 * @example ex03_getSpecificPalette
 	 */
 	public int[] getPalette(int i) {
-		
-		if(i >= json.size()) {
-			System.out.println("There are only "+json.size()+" palettes available.\nTo avoid errors, a random palette has been chosen for you");
-			i = PApplet.parseInt(myParent.random(json.size()));
-		}
 		
 		int[] values = new int[0];
 		
@@ -127,6 +119,15 @@ public class ColorPalette {
 		}
 		JSONArray palettes = myParent.loadJSONArray("http://www.colourlovers.com/api/palettes/top?format=json&numResults="+i);
 		myParent.saveJSONArray(palettes, myParent.dataPath("nice-color-palettes.json"));
+	}
+	
+	
+	/**
+	 * Return the number of palettes available
+	 * 
+	 */
+	public int getPaletteCount() {
+		return palette.size();
 	}
 	
 	/**
