@@ -16,9 +16,10 @@ void setup() {
   // Initialize it, passing a reference to the current PApplet 
   palette = new ColorPalette(this);
   
-  // Print an array of integers of the color palette
-  // Calling getPalette() without parameters will return a random palette.
-  printArray(palette.getPalette());
+  palette.getPalette();
+ 
+  // Calling getPaletteCount() to return the number of palettes available
+  println(palette.getPaletteCount());
 }
 
 void draw() {

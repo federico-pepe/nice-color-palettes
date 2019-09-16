@@ -127,7 +127,7 @@ public class ColorPalette {
 	 * 
 	 */
 	public int getPaletteCount() {
-		return palette.size();
+		return json.size();
 	}
 	
 	/**
