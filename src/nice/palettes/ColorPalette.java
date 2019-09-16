@@ -124,7 +124,7 @@ public class ColorPalette {
 	
 	/**
 	 * Return the number of palettes available
-	 * 
+	 * @example  ex05_getPaletteCount
 	 */
 	public int getPaletteCount() {
 		return json.size();
