@@ -2,7 +2,10 @@ package nice.palettes;
 
 import processing.core.*;
 import processing.data.*;
+
 import java.io.*;
+import java.net.*;
+import java.util.stream.Collectors;
 
 /**
  * Nice Color Palette
@@ -102,7 +105,7 @@ public class ColorPalette {
 	 * @example ex04_refreshPalettes
 	 */
 	public void refresh() {
-		JSONArray palettes = myParent.loadJSONArray("http://www.colourlovers.com/api/palettes/top?format=json");
+		JSONArray palettes = request(20);
 		myParent.saveJSONArray(palettes, myParent.dataPath("nice-color-palettes.json"));
 	}
 	
@@ -117,7 +120,7 @@ public class ColorPalette {
 		if(i <= 0 || i > 100) {
 			i = 100;
 		}
-		JSONArray palettes = myParent.loadJSONArray("http://www.colourlovers.com/api/palettes/top?format=json&numResults="+i);
+		JSONArray palettes = request(i);
 		myParent.saveJSONArray(palettes, myParent.dataPath("nice-color-palettes.json"));
 	}
 	
@@ -137,6 +140,37 @@ public class ColorPalette {
 	private void welcome() {
 		System.out.println("##library.name## ##library.prettyVersion## by ##author##\n");
 	}
+	
+	
+	/**
+	 * 	New function to fix a 403 error while requesting new color palette to colourlovers.com
+	 */
+	private JSONArray request(int i){  
+		
+		if(i <= 0 || i > 100) {
+			i = 100;
+		} else {
+			i = 20;
+		}
+		
+		HttpURLConnection connection = null;
+	    
+		try{ 
+	        // Connect to the URL adding user-agent property
+	        URL url = new URL("https://www.colourlovers.com/api/palettes/top?format=json&numResults="+i);  
+	        connection = (HttpURLConnection)url.openConnection();
+	        connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
+	        // Buffer Reader for Output
+	        BufferedReader ir = new BufferedReader(new InputStreamReader((InputStream) connection.getContent()));        
+	        return myParent.parseJSONArray(ir.lines().collect(Collectors.joining()));
+	      } catch(Exception e){
+	        System.out.println(e);
+	        return null;
+	      } finally {
+	        connection.disconnect();
+	      }
+	}  
+		
 	
 	/**
 	 * return the version of the Library.
