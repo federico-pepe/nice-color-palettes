@@ -149,8 +149,6 @@ public class ColorPalette {
 		
 		if(i <= 0 || i > 100) {
 			i = 100;
-		} else {
-			i = 20;
 		}
 		
 		HttpURLConnection connection = null;
